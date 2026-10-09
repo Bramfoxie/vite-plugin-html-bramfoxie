@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import HtmlMila from "./src/index.js";
+import HtmlBramfoxie from "./src/index.js";
 
 export default defineConfig({
     root: './example',
@@ -14,7 +14,7 @@ export default defineConfig({
         }
     },
     plugins: [
-        HtmlMila({
+        HtmlBramfoxie({
             outDir: '../dist-example',
             minify: true,
             minifyOptions: {

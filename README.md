@@ -9,14 +9,18 @@ Vite plugin for minimizing html, with the ability to copy html files. Terser is 
 # Install
 
 ```
-yarn add -D vite-plugin-html-mila
+yarn add -D vite-plugin-html-bramfoxie
 ```
+
+# Requirements
+
+Vite 8+ and Node.js `^20.19.0 || >=22.12.0`.
 
 # Sample vite.config.js
 
 ```javascript
 import { defineConfig } from 'vite';
-import { HtmlMila } from 'vite-plugin-html-mila';
+import HtmlBramfoxie from 'vite-plugin-html-bramfoxie';
 
 export default defineConfig ({
     /**
@@ -26,7 +30,7 @@ export default defineConfig ({
     root: './src',
     
     plugins: [
-        HtmlMila(/* options */)
+        HtmlBramfoxie(/* options */)
     ]
 });
 ```
@@ -36,19 +40,19 @@ export default defineConfig ({
 ```javascript
 {
     /**
-     * Write debug to console.
+     * Write output to console.
      * Default: true.
      */
     verbose: true,
 
     /**
-     * Path to output directory.
-     * Required.
+     * Path to output directory, relative to the Vite root (a leading "/" is ignored).
+     * Default: '' (the Vite root).
      */
     outDir: '../dist',
 
     /**
-     * Minify HTML file from targets.
+     * Minify HTML files from targets. If false, they are only copied.
      * Default: true.
      */
     minify: true,
@@ -60,12 +64,15 @@ export default defineConfig ({
      */
     minifyImport: true,
 
-    /** Terser minify options, https://github.com/terser/html-minifier-terser
+    /**
+     * Terser minify options, https://github.com/terser/html-minifier-terser
+     * Passed to the minifier as is.
      */
     minifyOptions: {},
 
     /**
-     * List of files to process.
+     * Files to process: { "output file (relative to outDir)": "source file" }.
+     * Source paths are resolved from the current working directory.
      * Default: {}.
      */
     targets: {
@@ -74,3 +81,9 @@ export default defineConfig ({
     }
 }
 ```
+
+# Notes
+
+- Target files are processed only in `vite build`; minification of `?raw` imports also works in the dev server.
+- Invalid options and minification errors fail the build, even with `verbose: false`.
+- Printed sizes are the output size and its gzip size.
